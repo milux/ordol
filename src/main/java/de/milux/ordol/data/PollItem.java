@@ -19,9 +19,10 @@
 package de.milux.ordol.data;
 
 import de.milux.ordol.helpers.Utils;
+import io.vavr.Tuple;
+import io.vavr.Tuple2;
+
 import java.util.*;
-import javaslang.Tuple;
-import javaslang.Tuple2;
 
 public class PollItem<T> {
 

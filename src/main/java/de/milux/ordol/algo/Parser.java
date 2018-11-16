@@ -18,15 +18,16 @@
  */
 package de.milux.ordol.algo;
 
-import static javaslang.API.*;
-import static javaslang.Predicates.instanceOf;
-
 import de.milux.ordol.helpers.Utils;
-import java.util.List;
-import java.util.stream.Collectors;
 import soot.*;
 import soot.jimple.*;
 import soot.jimple.internal.AbstractInstanceInvokeExpr;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static io.vavr.API.*;
+import static io.vavr.Predicates.instanceOf;
 
 public class Parser {
 
@@ -35,11 +36,11 @@ public class Parser {
   public static String getInvokeType(InvokeExpr ie) {
     return Match(ie)
         .of(
-            Case(instanceOf(VirtualInvokeExpr.class), Jimple.VIRTUALINVOKE),
-            Case(instanceOf(SpecialInvokeExpr.class), Jimple.SPECIALINVOKE),
-            Case(instanceOf(InterfaceInvokeExpr.class), Jimple.INTERFACEINVOKE),
-            Case(instanceOf(StaticInvokeExpr.class), Jimple.STATICINVOKE),
-            Case(instanceOf(DynamicInvokeExpr.class), Jimple.DYNAMICINVOKE),
+            Case($(instanceOf(VirtualInvokeExpr.class)), Jimple.VIRTUALINVOKE),
+            Case($(instanceOf(SpecialInvokeExpr.class)), Jimple.SPECIALINVOKE),
+            Case($(instanceOf(InterfaceInvokeExpr.class)), Jimple.INTERFACEINVOKE),
+            Case($(instanceOf(StaticInvokeExpr.class)), Jimple.STATICINVOKE),
+            Case($(instanceOf(DynamicInvokeExpr.class)), Jimple.DYNAMICINVOKE),
             Case(
                 $(),
                 i -> {
@@ -106,7 +107,7 @@ public class Parser {
     return Match(v)
         .of(
             Case(
-                instanceOf(Local.class),
+                $(instanceOf(Local.class)),
                 l -> {
                   StringBuilder sb = Utils.getBuilder();
                   sb.append("<");
@@ -114,9 +115,9 @@ public class Parser {
                   sb.append(">");
                   return Utils.freeBuilder(sb);
                 }),
-            Case(instanceOf(Constant.class), Object::toString),
+            Case($(instanceOf(Constant.class)), Object::toString),
             Case(
-                instanceOf(BinopExpr.class),
+                $(instanceOf(BinopExpr.class)),
                 e -> {
                   StringBuilder sb = Utils.getBuilder();
                   sb.append(parseValue(e.getOp1(), refTypes));
@@ -125,7 +126,7 @@ public class Parser {
                   return Utils.freeBuilder(sb);
                 }),
             Case(
-                instanceOf(FieldRef.class),
+                $(instanceOf(FieldRef.class)),
                 f -> {
                   StringBuilder sb = Utils.getBuilder();
                   if (f instanceof InstanceFieldRef) {
@@ -136,7 +137,7 @@ public class Parser {
                   return Utils.freeBuilder(sb);
                 }),
             Case(
-                instanceOf(InvokeExpr.class),
+                $(instanceOf(InvokeExpr.class)),
                 i -> {
                   StringBuilder sb = Utils.getBuilder();
                   sb.append(getInvokeType(i));
@@ -156,13 +157,13 @@ public class Parser {
                   return Utils.freeBuilder(sb);
                 }),
             Case(
-                instanceOf(IdentityRef.class),
+                $(instanceOf(IdentityRef.class)),
                 r ->
                     Match(r)
                         .of(
-                            Case(instanceOf(ThisRef.class), tr -> "@this"),
+                            Case($(instanceOf(ThisRef.class)), tr -> "@this"),
                             Case(
-                                instanceOf(ParameterRef.class),
+                                $(instanceOf(ParameterRef.class)),
                                 pr -> {
                                   StringBuilder sb = Utils.getBuilder();
                                   sb.append("@parameter");
@@ -171,7 +172,7 @@ public class Parser {
                                   sb.append(parseType(pr.getType(), refTypes));
                                   return Utils.freeBuilder(sb);
                                 }),
-                            Case(instanceOf(CaughtExceptionRef.class), ce -> "@caughtexception"),
+                            Case($(instanceOf(CaughtExceptionRef.class)), ce -> "@caughtexception"),
                             Case(
                                 $(),
                                 x -> {
@@ -180,7 +181,7 @@ public class Parser {
                                   return x.toString();
                                 }))),
             Case(
-                instanceOf(CastExpr.class),
+                $(instanceOf(CastExpr.class)),
                 c -> {
                   StringBuilder sb = Utils.getBuilder();
                   sb.append("(");
@@ -190,7 +191,7 @@ public class Parser {
                   return Utils.freeBuilder(sb);
                 }),
             Case(
-                instanceOf(ArrayRef.class),
+                $(instanceOf(ArrayRef.class)),
                 a -> {
                   StringBuilder sb = Utils.getBuilder();
                   sb.append(parseValue(a.getBase(), refTypes));
@@ -199,9 +200,9 @@ public class Parser {
                   sb.append("]");
                   return Utils.freeBuilder(sb);
                 }),
-            Case(instanceOf(NewExpr.class), n -> "new " + parseType(n.getType(), refTypes)),
+            Case($(instanceOf(NewExpr.class)), n -> "new " + parseType(n.getType(), refTypes)),
             Case(
-                instanceOf(NewArrayExpr.class),
+                $(instanceOf(NewArrayExpr.class)),
                 n -> {
                   StringBuilder sb = Utils.getBuilder();
                   sb.append("newarray (");
@@ -211,10 +212,10 @@ public class Parser {
                   sb.append("]");
                   return Utils.freeBuilder(sb);
                 }),
-            Case(instanceOf(NegExpr.class), n -> "neg " + parseValue(n.getOp(), refTypes)),
-            Case(instanceOf(LengthExpr.class), l -> "lengthof " + parseValue(l.getOp(), refTypes)),
+            Case($(instanceOf(NegExpr.class)), n -> "neg " + parseValue(n.getOp(), refTypes)),
+            Case($(instanceOf(LengthExpr.class)), l -> "lengthof " + parseValue(l.getOp(), refTypes)),
             Case(
-                instanceOf(InstanceOfExpr.class),
+                $(instanceOf(InstanceOfExpr.class)),
                 io -> {
                   StringBuilder sb = Utils.getBuilder();
                   sb.append(parseValue(io.getOp(), refTypes));
@@ -235,7 +236,7 @@ public class Parser {
     return Match(u)
         .of(
             Case(
-                instanceOf(AssignStmt.class),
+                $(instanceOf(AssignStmt.class)),
                 a -> {
                   StringBuilder sb = Utils.getBuilder();
                   sb.append(Parser.parseValue(a.getLeftOp(), refTypes));
@@ -244,22 +245,22 @@ public class Parser {
                   return Utils.freeBuilder(sb);
                 }),
             Case(
-                instanceOf(IdentityStmt.class),
+                $(instanceOf(IdentityStmt.class)),
                 i -> "identity " + Parser.parseValue(i.getRightOp(), refTypes)),
-            Case(instanceOf(GotoStmt.class), g -> "goto"),
+            Case($(instanceOf(GotoStmt.class)), g -> "goto"),
             Case(
-                instanceOf(IfStmt.class),
+                $(instanceOf(IfStmt.class)),
                 i -> "if " + Parser.parseValue(i.getCondition(), refTypes)),
-            Case(instanceOf(InvokeStmt.class), i -> Parser.parseValue(i.getInvokeExpr(), refTypes)),
-            Case(instanceOf(ReturnVoidStmt.class), r -> "return"),
-            Case(instanceOf(ReturnStmt.class), r -> Parser.parseValue(r.getOp(), refTypes)),
+            Case($(instanceOf(InvokeStmt.class)), i -> Parser.parseValue(i.getInvokeExpr(), refTypes)),
+            Case($(instanceOf(ReturnVoidStmt.class)), r -> "return"),
+            Case($(instanceOf(ReturnStmt.class)), r -> Parser.parseValue(r.getOp(), refTypes)),
             Case(
-                instanceOf(SwitchStmt.class),
+                $(instanceOf(SwitchStmt.class)),
                 s ->
                     Match(s)
                         .of(
                             Case(
-                                instanceOf(TableSwitchStmt.class),
+                                $(instanceOf(TableSwitchStmt.class)),
                                 ts -> {
                                   StringBuilder sb = Utils.getBuilder();
                                   sb.append("tableswitch (");
@@ -272,7 +273,7 @@ public class Parser {
                                   return Utils.freeBuilder(sb);
                                 }),
                             Case(
-                                instanceOf(LookupSwitchStmt.class),
+                                $(instanceOf(LookupSwitchStmt.class)),
                                 ls -> {
                                   StringBuilder sb = Utils.getBuilder();
                                   sb.append("lookupswitch (");
@@ -294,18 +295,18 @@ public class Parser {
                                   return x.toString();
                                 }))),
             Case(
-                instanceOf(ThrowStmt.class),
+                $(instanceOf(ThrowStmt.class)),
                 t -> "throw " + Parser.parseValue(t.getOp(), refTypes)),
             Case(
-                instanceOf(MonitorStmt.class),
+                $(instanceOf(MonitorStmt.class)),
                 mo ->
                     Match(mo)
                         .of(
                             Case(
-                                instanceOf(EnterMonitorStmt.class),
+                                $(instanceOf(EnterMonitorStmt.class)),
                                 en -> "entermonitor " + Parser.parseValue(en.getOp(), refTypes)),
                             Case(
-                                instanceOf(ExitMonitorStmt.class),
+                                $(instanceOf(ExitMonitorStmt.class)),
                                 en -> "exitmonitor " + Parser.parseValue(en.getOp(), refTypes)),
                             Case(
                                 $(),
@@ -314,7 +315,7 @@ public class Parser {
                                       "Unknown sublcass of MonitorStmt: " + x.getClass().getName());
                                   return x.toString();
                                 }))),
-            Case(instanceOf(NopStmt.class), nop -> "nop"),
+            Case($(instanceOf(NopStmt.class)), nop -> "nop"),
             Case(
                 $(),
                 x -> {

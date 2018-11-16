@@ -20,11 +20,8 @@ package de.milux.ordol.data;
 
 import de.milux.ordol.algo.Parser;
 import de.milux.ordol.helpers.Utils;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
-import javaslang.Tuple;
-import javaslang.Tuple2;
+import io.vavr.Tuple;
+import io.vavr.Tuple2;
 import soot.SootClass;
 import soot.SootMethod;
 import soot.Unit;
@@ -32,6 +29,9 @@ import soot.jimple.InvokeExpr;
 import soot.jimple.internal.AbstractStmt;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
 
 public class UnitData {
 

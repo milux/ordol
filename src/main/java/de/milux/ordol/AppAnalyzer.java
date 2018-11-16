@@ -18,15 +18,25 @@
  */
 package de.milux.ordol;
 
-import static de.milux.ordol.Constants.*;
-import static java.lang.Math.max;
-import static java.lang.Math.min;
-
 import de.milux.ordol.algo.ApproxMethodMatching;
 import de.milux.ordol.algo.MatchingWrapper;
 import de.milux.ordol.algo.MethodMatching;
 import de.milux.ordol.data.*;
 import de.milux.ordol.helpers.*;
+import io.vavr.Tuple;
+import io.vavr.Tuple2;
+import io.vavr.Tuple3;
+import io.vavr.Tuple4;
+import io.vavr.control.Try;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+import soot.G;
+import soot.PackManager;
+import soot.Scene;
+
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -38,20 +48,10 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-import javaslang.Tuple;
-import javaslang.Tuple2;
-import javaslang.Tuple3;
-import javaslang.Tuple4;
-import javaslang.control.Try;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
-import soot.G;
-import soot.PackManager;
-import soot.Scene;
 
-import javax.annotation.Nonnull;
+import static de.milux.ordol.Constants.*;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 public class AppAnalyzer implements CLIDispatcher {
 

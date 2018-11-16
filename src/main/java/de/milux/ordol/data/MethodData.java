@@ -18,21 +18,12 @@
  */
 package de.milux.ordol.data;
 
-import static de.milux.ordol.Constants.K;
-import static de.milux.ordol.helpers.Utils.emptyOrROList;
-import static de.milux.ordol.helpers.Utils.emptyOrROMap;
-
 import de.milux.ordol.algo.Parser;
 import de.milux.ordol.helpers.CustomCollectors;
 import de.milux.ordol.helpers.IndexedList;
 import de.milux.ordol.helpers.Utils;
-import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-import javaslang.Lazy;
-import javaslang.control.Try;
+import io.vavr.Lazy;
+import io.vavr.control.Try;
 import soot.Body;
 import soot.SootField;
 import soot.SootMethod;
@@ -41,6 +32,16 @@ import soot.jimple.InvokeExpr;
 import soot.jimple.internal.AbstractStmt;
 import soot.toolkits.graph.Block;
 import soot.toolkits.graph.ExceptionalBlockGraph;
+
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+import static de.milux.ordol.Constants.K;
+import static de.milux.ordol.helpers.Utils.emptyOrROList;
+import static de.milux.ordol.helpers.Utils.emptyOrROMap;
 
 public class MethodData {
   public final String name;

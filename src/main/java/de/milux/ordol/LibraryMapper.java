@@ -23,8 +23,20 @@ import de.milux.ordol.helpers.CLIDispatcher;
 import de.milux.ordol.helpers.ClassBuilder;
 import de.milux.ordol.helpers.IOHelper;
 import de.milux.ordol.helpers.Utils;
+import io.vavr.collection.List;
+import io.vavr.control.Try;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+import soot.G;
+import soot.PackManager;
+import soot.Scene;
+
+import javax.annotation.Nonnull;
 import java.io.*;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -37,17 +49,6 @@ import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-import javaslang.collection.List;
-import javaslang.control.Try;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
-import soot.G;
-import soot.PackManager;
-import soot.Scene;
-
-import javax.annotation.Nonnull;
 
 public class LibraryMapper implements CLIDispatcher {
   private enum Mode {
@@ -169,7 +170,7 @@ public class LibraryMapper implements CLIDispatcher {
 
   @Override
   public void dispatch(CommandLine cmd, Options options)
-      throws ParseException, IllegalArgumentException {
+      throws ParseException {
     Mode m = Mode.valueOf(cmd.getOptionValue("m"));
     Path libDir = Constants.FS.getPath(cmd.getOptionValue("ld"));
     // allowed to be null
@@ -182,13 +183,14 @@ public class LibraryMapper implements CLIDispatcher {
       pattern = Pattern.compile(cmd.getOptionValue("p"));
     }
     // parse numerical values here, replace them with -1 if necessary
-    Number ncgNum = (Number) cmd.getParsedOptionValue("ncg"),
-        vcgNum = (Number) cmd.getParsedOptionValue("vcg");
+    Number ncgNum = (Number) cmd.getParsedOptionValue("ncg");
+    Number vcgNum = (Number) cmd.getParsedOptionValue("vcg");
     if (ncgNum == null && name == null) {
       throw new ParseException(
           "Must provide name \"-n\" or name capture group \"-ncg\", aborting.");
     }
-    int ncg = ncgNum == null ? -1 : ncgNum.intValue(), vcg = vcgNum.intValue();
+    int ncg = ncgNum == null ? -1 : ncgNum.intValue();
+    int vcg = vcgNum.intValue();
     // plausibility check of version capture group
     if (vcg < 1 || vcg > 2 || (ncgNum != null && (ncg < 1 || ncg > 2))) {
       throw new ParseException(
@@ -784,7 +786,7 @@ public class LibraryMapper implements CLIDispatcher {
             new OutputStreamWriter(
                 new DeflaterOutputStream(
                     Files.newOutputStream(jsonPath), new Deflater(Deflater.BEST_COMPRESSION)),
-                "UTF-8")) {
+                    StandardCharsets.UTF_8)) {
           Utils.getGson().toJson(cdList, w);
           this.libDirectories.add(parent.getFileName().toString());
         }

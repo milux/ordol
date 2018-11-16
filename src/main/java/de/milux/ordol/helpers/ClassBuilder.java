@@ -18,8 +18,8 @@
  */
 package de.milux.ordol.helpers;
 
-import static de.milux.ordol.Constants.JAVAC_EXEC;
-import static de.milux.ordol.helpers.Utils.syncPrint;
+import io.vavr.collection.List;
+import io.vavr.control.Try;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,8 +33,9 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 import java.util.stream.Collectors;
-import javaslang.collection.List;
-import javaslang.control.Try;
+
+import static de.milux.ordol.Constants.JAVAC_EXEC;
+import static de.milux.ordol.helpers.Utils.syncPrint;
 
 public final class ClassBuilder {
 

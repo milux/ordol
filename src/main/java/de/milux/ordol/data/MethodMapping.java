@@ -20,10 +20,11 @@ package de.milux.ordol.data;
 
 import de.milux.ordol.algo.MethodMatching;
 import de.milux.ordol.helpers.Utils;
+import io.vavr.Tuple2;
+
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
-import javaslang.Tuple2;
 
 public class MethodMapping {
 

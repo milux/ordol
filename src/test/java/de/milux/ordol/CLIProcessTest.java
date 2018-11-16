@@ -18,21 +18,22 @@
  */
 package de.milux.ordol;
 
+import de.milux.ordol.helpers.IOHelper;
+import de.milux.ordol.helpers.IntHolder;
+import de.milux.ordol.helpers.Utils;
+import io.vavr.collection.List;
+import io.vavr.control.Try;
+import org.junit.After;
+import org.junit.Test;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 import static de.milux.ordol.Constants.ANDROID_PLATFORMS;
 import static de.milux.ordol.Constants.LIBS_DIRECTORY;
 import static de.milux.ordol.LibraryMapper.LIBS_ARCHIVE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-
-import de.milux.ordol.helpers.IOHelper;
-import de.milux.ordol.helpers.IntHolder;
-import de.milux.ordol.helpers.Utils;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import javaslang.collection.List;
-import javaslang.control.Try;
-import org.junit.After;
-import org.junit.Test;
 
 public class CLIProcessTest {
 

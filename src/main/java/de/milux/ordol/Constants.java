@@ -18,11 +18,12 @@
  */
 package de.milux.ordol;
 
+import io.vavr.collection.List;
+
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.regex.Pattern;
-import javaslang.collection.List;
 
 public final class Constants {
 

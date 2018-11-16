@@ -28,15 +28,16 @@ import de.milux.ordol.gson.ClassDataAdapter;
 import de.milux.ordol.gson.InterningStringDeserializer;
 import de.milux.ordol.gson.MethodDataAdapter;
 import de.milux.ordol.gson.UnitDataAdapter;
-import java.util.*;
-import java.util.concurrent.*;
-import java.util.function.BiPredicate;
-import javaslang.control.Try;
+import io.vavr.CheckedRunnable;
+import io.vavr.control.Try;
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import net.objecthunter.exp4j.function.Function;
 
 import javax.annotation.Nonnull;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.function.BiPredicate;
 
 public final class Utils {
 
@@ -71,7 +72,7 @@ public final class Utils {
     return gp;
   }
 
-  public static ProcessBuilder getConsoleProcessBuilder(javaslang.collection.List<String> cmd) {
+  public static ProcessBuilder getConsoleProcessBuilder(io.vavr.collection.List<String> cmd) {
     return new ProcessBuilder(Constants.SCRIPT_INTERPRETER.appendAll(cmd).toJavaList());
   }
 
@@ -259,7 +260,7 @@ public final class Utils {
     }
   }
 
-  public static void exToRtEx(Try.CheckedRunnable r) {
+  public static void exToRtEx(CheckedRunnable r) {
     Try.run(r)
         .onFailure(
             t -> {

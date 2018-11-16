@@ -20,9 +20,10 @@ package de.milux.ordol.gson;
 
 import com.google.gson.*;
 import de.milux.ordol.data.UnitData;
+import io.vavr.Tuple;
+
 import java.lang.reflect.Type;
 import java.util.Arrays;
-import javaslang.Tuple;
 
 public class UnitDataAdapter implements JsonSerializer<UnitData>, JsonDeserializer<UnitData> {
   @Override

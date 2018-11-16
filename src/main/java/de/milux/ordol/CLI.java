@@ -18,19 +18,20 @@
  */
 package de.milux.ordol;
 
-import static de.milux.ordol.Constants.K;
-import static de.milux.ordol.Constants.NUM_THREADS;
-import static de.milux.ordol.helpers.Utils.println;
-
 import de.milux.ordol.helpers.CLIDispatcher;
 import de.milux.ordol.helpers.CLIHelper;
 import de.milux.ordol.helpers.Utils;
+import io.vavr.control.Try;
+import org.apache.commons.cli.*;
+
 import java.util.List;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import javaslang.control.Try;
-import org.apache.commons.cli.*;
+
+import static de.milux.ordol.Constants.K;
+import static de.milux.ordol.Constants.NUM_THREADS;
+import static de.milux.ordol.helpers.Utils.println;
 
 public class CLI {
   private static final String MAPPER_CMD = "process";

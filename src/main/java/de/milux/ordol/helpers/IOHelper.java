@@ -25,6 +25,10 @@ import com.google.gson.reflect.TypeToken;
 import de.milux.ordol.Constants;
 import de.milux.ordol.data.BitSetWrapper;
 import de.milux.ordol.data.ClassData;
+import io.vavr.control.Try;
+
+import javax.annotation.Nonnull;
+import javax.xml.bind.DatatypeConverter;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -46,10 +50,6 @@ import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
-import javaslang.control.Try;
-
-import javax.annotation.Nonnull;
-import javax.xml.bind.DatatypeConverter;
 
 public final class IOHelper {
   public static final Type CLASSDATA_LIST_TYPE = new TypeToken<ArrayList<ClassData>>() {}.getType();
@@ -201,12 +201,12 @@ public final class IOHelper {
   }
 
   public static Path firstExisting(
-      Path parent, javaslang.collection.List<Path> subPaths, boolean resolve) {
+      Path parent, io.vavr.collection.List<Path> subPaths, boolean resolve) {
     return allExisting(parent, subPaths, resolve).getOrElse((Path) null);
   }
 
-  public static javaslang.collection.List<Path> allExisting(
-      Path parent, javaslang.collection.List<Path> subPaths, boolean resolve) {
+  public static io.vavr.collection.List<Path> allExisting(
+      Path parent, io.vavr.collection.List<Path> subPaths, boolean resolve) {
     if (resolve) {
       return subPaths.map(parent::resolve).filter(Files::exists);
     } else {
